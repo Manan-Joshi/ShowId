@@ -72,7 +72,11 @@ function collectionToArray(coll) {
 }
 
 function pageItemLabel(obj) {
-    return obj.constructor.name + " (ID:" + obj.id + ")";
+    var type = obj.constructor.name;
+    var label = type + " (ID:" + obj.id + ")"
+    if (type === "TextFrame")
+        label += ", StoryID: (" + obj.parentStory.id + ")"
+    return label;
 }
 
 function makeIdIndex(refKey) {
@@ -213,11 +217,11 @@ function selectPageItem(pageItem) {
         }
     }
 
-    if (!pageItem.visible) {
+    if (pageItem.hasOwnProperty("visible") && !pageItem.visible) {
         alert("Cannot select: object is invisible.");
         return false;
     }
-    if (pageItem.locked) {
+    if (pageItem.hasOwnProperty("locked") && pageItem.locked) {
         alert("Cannot select: object is locked.");
         return false;
     }
